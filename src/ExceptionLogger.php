@@ -56,6 +56,7 @@ readonly class ExceptionLogger implements ExceptionHandler
         $this->addTraceInformation($output, $exception);
         $this->addDebugInformation($output);
         $this->addServerInformation($output);
+        $this->addPostBodyInformation($output);
 
         return $output;
     }
@@ -97,5 +98,17 @@ readonly class ExceptionLogger implements ExceptionHandler
         foreach ($_SERVER as $name => $value) {
             $output .= sprintf("%-20s   %s\n", $name, $value);
         }
+    }
+
+    private function addPostBodyInformation(string &$output): void
+    {
+        $input = file_get_contents('php://input');
+
+        if (!$input) {
+            return;
+        }
+
+        $output .= "\n=== POST BODY ===\n\n";
+        $output .= $input . "\n";
     }
 }
