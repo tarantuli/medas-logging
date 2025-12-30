@@ -1,8 +1,8 @@
 {
-    "name": "morphp/medas-placeholder",
-    "description": "Medas placeholder",
+    "name": "morphp/medas-error-log",
+    "description": "Medas error log",
     "keywords": [
-        "placeholder"
+        "backend"
     ],
     "authors": [
         {
@@ -22,8 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Medas\\Placeholder\\": "src/",
-            "Medas\\PlaceholderTest\\": "tests/"
+            "Medas\\ErrorLog\\": "src/",
+            "Medas\\ErrorLogTest\\": "tests/"
         }
     }
 }
