@@ -24,6 +24,9 @@ readonly class ExceptionLogger implements ExceptionHandler
         string|null                      $logDirectory,
         private DebugInformationGatherer $debugInformationGatherer,
         private TraceFormatter           $traceFormatter,
+
+        #[ConfigValue(ConfigOptions\FileNamePattern::class)]
+        private string                   $fileNamePattern,
     )
     {
         $this->logDirectory = $logDirectory ?? 'var/log';
@@ -41,11 +44,22 @@ readonly class ExceptionLogger implements ExceptionHandler
 
     private function getFileName(\Throwable $exception): string
     {
+        $replacements = [
+            '{dateYmd}' => date('Ymd'),
+            '{timeHi}' => date('Hi'),
+            '{message}' => mb_substr(
+                preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
+                0,
+                32
+            ),
+        ];
+
         return $this->logDirectory
-            . date('Ymd-Hi')
-            . '_'
-            . mb_substr(preg_replace('/\W+/', '-', strtolower($exception->getMessage())), 0, 32)
-            . '.log';
+            . str_replace(
+                array_keys($replacements),
+                array_values($replacements),
+                $this->fileNamePattern
+            );
     }
 
     private function getContent(\Throwable $exception): string
