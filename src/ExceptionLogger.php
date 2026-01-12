@@ -55,6 +55,8 @@ readonly class ExceptionLogger implements ExceptionHandler
         ];
 
         return $this->logDirectory
+            . DIRECTORY_SEPARATOR
+
             . str_replace(
                 array_keys($replacements),
                 array_values($replacements),
@@ -69,8 +71,8 @@ readonly class ExceptionLogger implements ExceptionHandler
         $this->addExceptionMessage($output, $exception);
         $this->addTraceInformation($output, $exception);
         $this->addDebugInformation($output);
-        $this->addServerInformation($output);
         $this->addPostBodyInformation($output);
+        $this->addServerInformation($output);
 
         return $output;
     }
@@ -105,15 +107,6 @@ readonly class ExceptionLogger implements ExceptionHandler
         }
     }
 
-    private function addServerInformation(string &$output): void
-    {
-        $output .= "\n=== SERVER ===\n\n";
-
-        foreach ($_SERVER as $name => $value) {
-            $output .= sprintf("%-20s   %s\n", $name, $value);
-        }
-    }
-
     private function addPostBodyInformation(string &$output): void
     {
         $input = file_get_contents('php://input');
@@ -124,5 +117,14 @@ readonly class ExceptionLogger implements ExceptionHandler
 
         $output .= "\n=== POST BODY ===\n\n";
         $output .= $input . "\n";
+    }
+
+    private function addServerInformation(string &$output): void
+    {
+        $output .= "\n=== SERVER ===\n\n";
+
+        foreach ($_SERVER as $name => $value) {
+            $output .= sprintf("%-20s   %s\n", $name, $value);
+        }
     }
 }
