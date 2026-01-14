@@ -19,6 +19,9 @@
     "ext-mbstring": "*"
   },
   "require-dev": {
+    "morphp/medas-config-manager": "dev-dev",
+    "morphp/medas-config-options": "dev-dev",
+    "morphp/medas-file-system": "dev-dev",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {
