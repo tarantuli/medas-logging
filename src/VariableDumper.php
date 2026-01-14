@@ -47,19 +47,21 @@ readonly class VariableDumper
 
     private function dumpVariable(mixed $variable, string $name): void
     {
-        $filename = $this->getFileName($name);
-        $content = $this->getContent($variable);
+        $filename = $this->getFileName();
+        $content = $this->getContent($name, $variable);
 
-        file_put_contents($filename, $content);
+        file_put_contents($filename, $content, FILE_APPEND);
     }
 
-    private function getFileName(string $name): string
+    private function getFileName(): string
     {
-        return $this->logDirectory . DIRECTORY_SEPARATOR . date('His') . '-' . $name . '.log';
+        return $this->logDirectory . DIRECTORY_SEPARATOR . 'variables.log';
     }
 
-    private function getContent(mixed $variable): string
+    private function getContent(string $name, mixed $variable): string
     {
-        return StringMaker::instance()->fromVariable($variable, $this->stringMakerSettings);
+        return sprintf("%s  -  %s\n", date('Y-m-d H:i:s'), $name)
+            . StringMaker::instance()->fromVariable($variable, $this->stringMakerSettings)
+            . "\n\n";
     }
 }
