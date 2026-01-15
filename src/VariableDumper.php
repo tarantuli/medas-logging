@@ -17,10 +17,11 @@ readonly class VariableDumper
     private StringMaker\Settings $stringMakerSettings;
 
     public function __construct(
-        DirectoryCreator    $directoryCreator,
+        DirectoryCreator                      $directoryCreator,
+        private VariableDumper\CallParameters $callParameters,
 
         #[ConfigValue(ConfigOptions\LogDirectory::class)]
-        private string|null $logDirectory,
+        private string|null                   $logDirectory,
     )
     {
         $directoryCreator->create($this->logDirectory);
@@ -28,29 +29,22 @@ readonly class VariableDumper
         $this->stringMakerSettings = new StringMaker\Settings(forceUtf8: true);
     }
 
-    public function dump(mixed ...$variables): void
+    public function dump(mixed ...$variables): string
     {
         $caller = debug_backtrace()[0];
-        $code = explode("\n", file_get_contents($caller['file']))[$caller['line'] - 1];
+        $names = $this->callParameters->find($caller['file'], $caller['line']);
+        $fileName = $this->getFileName();
+        $header = sprintf("%s:%u\n", $caller['file'], $caller['line']);
 
-        if (preg_match('/->dump\((.+?)\)/', $code, $matches)) {
-            $names = preg_split('/, ?/', $matches[1]);
-        }
-        else {
-            $names = null;
-        }
+        file_put_contents($fileName, $header, FILE_APPEND);
 
         foreach ($variables as $i => $variable) {
-            $this->dumpVariable($variable, $names[$i] ?? 'argument ' . ($i + 1));
+            $content = $this->getContent($names[$i] ?? 'argument ' . ($i + 1), $variable);
+
+            file_put_contents($fileName, $content, FILE_APPEND);
         }
-    }
 
-    private function dumpVariable(mixed $variable, string $name): void
-    {
-        $filename = $this->getFileName();
-        $content = $this->getContent($name, $variable);
-
-        file_put_contents($filename, $content, FILE_APPEND);
+        return $fileName;
     }
 
     private function getFileName(): string
@@ -61,6 +55,7 @@ readonly class VariableDumper
     private function getContent(string $name, mixed $variable): string
     {
         return sprintf("%s  -  %s\n", date('Y-m-d H:i:s'), $name)
+            . '   '
             . StringMaker::instance()->fromVariable($variable, $this->stringMakerSettings)
             . "\n\n";
     }
