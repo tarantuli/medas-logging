@@ -26,7 +26,10 @@ readonly class VariableDumper
     {
         $directoryCreator->create($this->logDirectory);
 
-        $this->stringMakerSettings = new StringMaker\Settings(forceUtf8: true, alwaysAddClass: true);
+        $this->stringMakerSettings = new StringMaker\Settings(
+            forceUtf8: true,
+            alwaysAddClass: true
+        );
     }
 
     public function dump(mixed ...$variables): string

@@ -124,7 +124,7 @@ readonly class ExceptionLogger implements ExceptionHandler
         $output .= "\n=== SERVER ===\n\n";
 
         foreach ($_SERVER as $name => $value) {
-            $output .= sprintf("%-20s   %s\n", $name, $value);
+            $output .= sprintf("%-20s   %s\n", $name, is_scalar($value) ? $value : gettype($value));
         }
     }
 }
