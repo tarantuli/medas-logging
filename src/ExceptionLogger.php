@@ -101,9 +101,23 @@ readonly class ExceptionLogger implements ExceptionHandler
         }
 
         $output .= "\n=== DEBUG EVENTS ===\n\n";
+        $previousSource = null;
 
         foreach ($this->debugInformationGatherer->events as $event) {
-            $output .= $event . "\n";
+            if (preg_match('/^(\[.+?]) ?(.+)$/', $event, $matches)) {
+                $source = $matches[1];
+                $event = $matches[2];
+            }
+            else {
+                $source = null;
+            }
+
+            if ($source !== $previousSource) {
+                $output .= "$source\n";
+                $previousSource = $source;
+            }
+
+            $output .= "   $event\n";
         }
     }
 
