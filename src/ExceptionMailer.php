@@ -39,6 +39,9 @@ readonly class ExceptionMailer implements ExceptionHandler
 
         #[ConfigValue(ConfigOptions\Email\Receiver::class)]
         string|null                  $receiver,
+
+        #[ConfigValue(ConfigOptions\Email\Sender::class)]
+        string|null                  $sender,
     )
     {
         if ($this->emailExceptions
@@ -59,6 +62,10 @@ readonly class ExceptionMailer implements ExceptionHandler
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $this->mailer->Username = $username;
             $this->mailer->Password = $password;
+
+            if ($sender !== null) {
+                $this->mailer->FromName = $sender;
+            }
 
             $this->mailer->addAddress($receiver);
         }
