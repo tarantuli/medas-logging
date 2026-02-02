@@ -41,7 +41,12 @@ readonly class ExceptionMailer implements ExceptionHandler
         string|null                  $receiver,
     )
     {
-        if ($this->emailExceptions) {
+        if ($this->emailExceptions
+                && $host !== null
+                && $port !== null
+                && $username !== null
+                && $password !== null
+                && $receiver !== null) {
             $this->mailer = new PHPMailer(true);
 
             $this->mailer->isSMTP();
