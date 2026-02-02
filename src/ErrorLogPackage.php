@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Medas\ErrorLog;
 
 use Medas\Core\AsSingleton;
-use Medas\ServiceManager\{BasePackage, ServiceConfig};
+use Medas\ServiceManager\BasePackage;
 
 class ErrorLogPackage extends BasePackage
 {
@@ -19,14 +19,5 @@ class ErrorLogPackage extends BasePackage
     public function sourceDirectory(): string
     {
         return __DIR__;
-    }
-
-    public function initialize(ServiceConfig $config): void
-    {
-        parent::initialize($config);
-
-        $config->addExceptionHandler(service(CliExceptionPrinter::class));
-        $config->addExceptionHandler(service(ExceptionLogger::class));
-        $config->addExceptionHandler(service(ExceptionMailer::class));
     }
 }
