@@ -27,5 +27,6 @@ class ErrorLogPackage extends BasePackage
 
         $config->addExceptionHandler(service(CliExceptionPrinter::class));
         $config->addExceptionHandler(service(ExceptionLogger::class));
+        $config->addExceptionHandler(service(ExceptionMailer::class));
     }
 }
