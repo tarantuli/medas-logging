@@ -14,6 +14,17 @@ readonly class ExceptionMailer implements ExceptionHandler
     private PHPMailer $mailer;
 
     public function __construct(
+        private ExceptionInformation $exceptionInformation,
+
+        #[ConfigValue(ConfigOptions\EmailExceptions::class)]
+        private bool                 $emailExceptions,
+
+        #[ConfigValue(ConfigOptions\Email\EmailBadRequests::class)]
+        private bool                 $emailBadRequests,
+
+        #[ConfigValue(ConfigOptions\Email\SubjectPattern::class)]
+        private string|null          $subjectPattern,
+
         #[ConfigValue(ConfigOptions\Email\Port::class)]
         int|null                     $port,
 
@@ -28,16 +39,6 @@ readonly class ExceptionMailer implements ExceptionHandler
 
         #[ConfigValue(ConfigOptions\Email\Receiver::class)]
         string|null                  $receiver,
-        private ExceptionInformation $exceptionInformation,
-
-        #[ConfigValue(ConfigOptions\EmailExceptions::class)]
-        private bool                 $emailExceptions,
-
-        #[ConfigValue(ConfigOptions\Email\EmailBadRequests::class)]
-        private bool                 $emailBadRequests,
-
-        #[ConfigValue(ConfigOptions\Email\SubjectPattern::class)]
-        private string|null          $subjectPattern,
     )
     {
         if ($this->emailExceptions) {

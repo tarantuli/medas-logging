@@ -17,11 +17,11 @@ readonly class VariableDumper
     private StringMaker\Settings $stringMakerSettings;
 
     public function __construct(
-        DirectoryCreator                      $directoryCreator,
         private VariableDumper\CallParameters $callParameters,
 
         #[ConfigValue(ConfigOptions\LogDirectory::class)]
         private string|null                   $logDirectory,
+        DirectoryCreator                      $directoryCreator,
     )
     {
         $directoryCreator->create($this->logDirectory);

@@ -18,10 +18,6 @@ readonly class ExceptionLogger implements ExceptionHandler
     private string $logDirectory;
 
     public function __construct(
-        DirectoryCreator             $directoryCreator,
-
-        #[ConfigValue(ConfigOptions\LogDirectory::class)]
-        string|null                  $logDirectory,
         private ExceptionInformation $exceptionInformation,
 
         #[ConfigValue(ConfigOptions\LogBadRequests::class)]
@@ -32,6 +28,10 @@ readonly class ExceptionLogger implements ExceptionHandler
 
         #[ConfigValue(ConfigOptions\FileNamePattern::class)]
         private string               $fileNamePattern,
+        DirectoryCreator             $directoryCreator,
+
+        #[ConfigValue(ConfigOptions\LogDirectory::class)]
+        string|null                  $logDirectory,
     )
     {
         $this->logDirectory = $logDirectory ?? 'var/log';
