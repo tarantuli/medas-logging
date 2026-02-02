@@ -38,6 +38,6 @@ readonly class SubjectPattern implements ConfigOption
 
     public function default(): string
     {
-        return '{file-name}:{line-number} {message}';
+        return '<{file-name}:{line-number}> {message}';
     }
 }

@@ -53,7 +53,6 @@ readonly class ExceptionMailer implements ExceptionHandler
             $this->mailer = new PHPMailer(true);
 
             $this->mailer->isSMTP();
-            $this->mailer->isHTML();
 
             $this->mailer->CharSet = PHPMailer::CHARSET_UTF8;
             $this->mailer->Host = $host;
@@ -73,7 +72,7 @@ readonly class ExceptionMailer implements ExceptionHandler
 
     public function handleException(\Throwable $exception): void
     {
-        if (!$this->emailExceptions) {
+        if (!$this->emailExceptions || !isset($this->mailer)) {
             return;
         }
 
@@ -81,10 +80,12 @@ readonly class ExceptionMailer implements ExceptionHandler
             return;
         }
 
-        $this->mailer->Subject = $this->getSubject($exception);
-        $this->mailer->Body = $this->exceptionInformation->gather($exception);
+        $mailer = clone $this->mailer;
 
-        $this->mailer->send();
+        $mailer->Subject = $this->getSubject($exception);
+        $mailer->Body = $this->exceptionInformation->gather($exception);
+
+        $mailer->send();
     }
 
     private function getSubject(\Throwable $exception): string
