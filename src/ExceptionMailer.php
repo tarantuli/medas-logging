@@ -25,6 +25,9 @@ readonly class ExceptionMailer implements ExceptionHandler
         #[ConfigValue(ConfigOptions\Email\SubjectPattern::class)]
         private string|null          $subjectPattern,
 
+        #[ConfigValue(ConfigOptions\Email\Sender::class)]
+        private string|null          $sender,
+
         #[ConfigValue(ConfigOptions\Email\Port::class)]
         int|null                     $port,
 
@@ -39,9 +42,6 @@ readonly class ExceptionMailer implements ExceptionHandler
 
         #[ConfigValue(ConfigOptions\Email\Receiver::class)]
         string|null                  $receiver,
-
-        #[ConfigValue(ConfigOptions\Email\Sender::class)]
-        string|null                  $sender,
     )
     {
         if ($this->emailExceptions
@@ -91,6 +91,7 @@ readonly class ExceptionMailer implements ExceptionHandler
     private function getSubject(\Throwable $exception): string
     {
         $replacements = [
+            '{sender}' => $this->sender ?? 'medas',
             '{file-name}' => basename($exception->getFile()),
             '{line-number}' => $exception->getLine(),
             '{message}' => mb_substr($exception->getMessage(), 0, 100),
