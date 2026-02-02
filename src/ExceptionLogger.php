@@ -8,6 +8,7 @@ use Medas\Core\{
     Attributes\ConfigValue,
     Attributes\Service,
     Events\DebugInformationGatherer,
+    Interfaces\BadRequestException,
     Interfaces\DirectoryCreator
 };
 use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
@@ -18,15 +19,13 @@ readonly class ExceptionLogger implements ExceptionHandler
     private string $logDirectory;
 
     public function __construct(
-        DirectoryCreator                 $directoryCreator,
-
-        #[ConfigValue(ConfigOptions\LogDirectory::class)]
-        string|null                      $logDirectory,
-        private DebugInformationGatherer $debugInformationGatherer,
-        private TraceFormatter           $traceFormatter,
+        DirectoryCreator $directoryCreator, #[ConfigValue(ConfigOptions\LogDirectory::class)]
+        string|null $logDirectory, private DebugInformationGatherer $debugInformationGatherer, private TraceFormatter $traceFormatter, #[ConfigValue(
+            ConfigOptions\LogBadRequests::class
+        )]private bool $logBadRequests,
 
         #[ConfigValue(ConfigOptions\FileNamePattern::class)]
-        private string                   $fileNamePattern,
+        private string   $fileNamePattern,
     )
     {
         $this->logDirectory = $logDirectory ?? 'var/log';
@@ -36,6 +35,10 @@ readonly class ExceptionLogger implements ExceptionHandler
 
     public function handleException(\Throwable $exception): void
     {
+        if (!$this->logBadRequests && $exception instanceof BadRequestException) {
+            return;
+        }
+
         $filename = $this->getFileName($exception);
         $content = $this->getContent($exception);
 
@@ -54,14 +57,13 @@ readonly class ExceptionLogger implements ExceptionHandler
             ),
         ];
 
-        return $this->logDirectory
-            . DIRECTORY_SEPARATOR
+        $fileName = str_replace(
+            array_keys($replacements),
+            array_values($replacements),
+            $this->fileNamePattern
+        );
 
-            . str_replace(
-                array_keys($replacements),
-                array_values($replacements),
-                $this->fileNamePattern
-            );
+        return $this->logDirectory . DIRECTORY_SEPARATOR . $fileName;
     }
 
     private function getContent(\Throwable $exception): string
