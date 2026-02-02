@@ -22,7 +22,7 @@ readonly class EmailExceptions implements ConfigOption
 
     public function name(): string
     {
-        return 'email-exceptions';
+        return 'e-mail-exceptions';
     }
 
     public function description(): string
