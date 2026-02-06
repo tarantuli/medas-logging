@@ -1,7 +1,7 @@
 {
   "name": "morphp/medas-error-log",
   "description": "Medas error log",
-  "version": "v2.0.0",
+  "version": "v1.0.0",
   "keywords": [
     "backend"
   ],
@@ -14,15 +14,15 @@
   "type": "library",
   "require": {
     "ext-mbstring": "*",
-    "morphp/medas-core": "^2",
-    "morphp/medas-service-manager": "^2",
-    "php": "^8.4",
+    "morphp/medas-core": "^1",
+    "morphp/medas-service-manager": "^1",
+    "php": "^8.2",
     "phpmailer/phpmailer": "^7.0"
   },
   "require-dev": {
-    "morphp/medas-config-manager": "^2",
-    "morphp/medas-config-options": "^2",
-    "morphp/medas-file-system": "^2",
+    "morphp/medas-config-manager": "^1",
+    "morphp/medas-config-options": "^1",
+    "morphp/medas-file-system": "^1",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {

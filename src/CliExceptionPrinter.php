@@ -101,7 +101,7 @@ readonly class CliExceptionPrinter implements ExceptionHandler
             printf("%s\n", $type);
         }
         elseif (is_string($argument) && mb_detect_encoding($argument, 'UTF-8')) {
-            printf("%s\n", new CaseSensitiveString($argument)->truncateToCharLength(156));
+            printf("%s\n", (new CaseSensitiveString($argument))->truncateToCharLength(156));
         }
         else {
             printf("%s\n", StringMaker::instance()->forceUtf8((string) $argument));
