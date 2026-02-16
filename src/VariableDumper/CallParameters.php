@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\ErrorLog\VariableDumper;
+namespace Medas\Logging\VariableDumper;
 
 use Medas\Core\Attributes\Service;
 

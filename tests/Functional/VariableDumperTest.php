@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Functional;
+namespace Medas\LoggingTest\Functional;
 
-use Medas\ErrorLog\VariableDumper;
+use Medas\Logging\VariableDumper;
 use Medas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
 

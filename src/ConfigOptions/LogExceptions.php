@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\ErrorLog\ConfigOptions;
+namespace Medas\Logging\ConfigOptions;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOption};
 
@@ -10,7 +10,7 @@ use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOpt
 readonly class LogExceptions implements ConfigOption
 {
     public function __construct(
-        private ErrorLogGroup $group,
+        private LoggingGroup $group,
     )
     {
     }

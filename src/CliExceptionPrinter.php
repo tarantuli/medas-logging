@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\ErrorLog;
+namespace Medas\Logging;
 
 use Medas\Core\{Attributes\Service, CaseSensitiveString, StringMaker};
 use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
@@ -58,10 +58,7 @@ readonly class CliExceptionPrinter implements ExceptionHandler
             printf("  %s::%s()\n", $trace['class'], $trace['function']);
 
             try {
-                $parameters = (new \ReflectionMethod(
-                    $trace['class'],
-                    $trace['function']
-                ))->getParameters();
+                $parameters = (new \ReflectionMethod($trace['class'], $trace['function']))->getParameters();
             }
             catch (\ReflectionException) {
                 $parameters = null;

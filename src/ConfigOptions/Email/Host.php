@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\ErrorLog\ConfigOptions\Email;
+namespace Medas\Logging\ConfigOptions\Email;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOption};
 

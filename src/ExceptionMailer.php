@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\ErrorLog;
+namespace Medas\Logging;
 
 use Medas\Core\{Attributes\ConfigValue, Attributes\Service, Interfaces\BadRequestException};
 use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
