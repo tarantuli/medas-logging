@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging;
+namespace Medas\Logging\Printing;
 
 use Medas\Core\{Attributes\Service, CaseSensitiveString, StringMaker};
 use Medas\ServiceManager\ErrorHandling\ExceptionHandler;

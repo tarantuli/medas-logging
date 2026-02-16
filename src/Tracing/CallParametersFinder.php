@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\VariableDumper;
+namespace Medas\Logging\Tracing;
 
 use Medas\Core\Attributes\Service;
 
 #[Service]
-readonly class CallParameters
+readonly class CallParametersFinder
 {
-    public function find(string $file, int $line): array
+    public function find(string $file, int $line, string $methodName): array
     {
         $tokens = \PhpToken::tokenize(file_get_contents($file), TOKEN_PARSE);
         $names = [];
@@ -22,7 +22,7 @@ readonly class CallParameters
                 continue;
             }
 
-            if (!$foundStart && $tokens[$index - 1]->is(T_OBJECT_OPERATOR) && $token->text === 'dump') {
+            if (!$foundStart && $tokens[$index - 1]->is(T_OBJECT_OPERATOR) && $token->text === $methodName) {
                 $foundStart = true;
 
                 continue;

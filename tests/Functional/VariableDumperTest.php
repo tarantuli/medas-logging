@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Medas\LoggingTest\Functional;
 
-use Medas\Logging\VariableDumper;
+use Medas\ConfigOptions\OptionController;
+use Medas\Logging\ConfigOptions\LogDirectory;
+use Medas\Logging\ConfigOptions\VariablesLogFileName;
+use Medas\Logging\Logging\VariableLogger;
 use Medas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
 
@@ -12,20 +15,28 @@ class VariableDumperTest extends TestCase
 {
     public function testBasicLog(): void
     {
+        $fileName = $this->getFileName();
         $variable = new \stdClass();
 
         $variable->foo = ['bar', 'lala'];
         $serviceManager = service(ServiceManager::class);
-        $dumper = service(VariableDumper::class);
-        $fileName = $dumper->dump();
+        $variableLogger = service(VariableLogger::class);
 
-        unlink($fileName);
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
 
-        $fileName = $dumper->dump($variable->foo[1], $serviceManager);
+        $variableLogger->log($variable->foo[1], $serviceManager);
         $dumpFileContent = file_get_contents($fileName);
 
         self::assertStringContainsString('$variable->foo[1]', $dumpFileContent);
         self::assertStringContainsString('lala', $dumpFileContent);
         self::assertStringContainsString('Medas\ServiceManager\ServiceManager', $dumpFileContent);
+    }
+
+    private function getFileName(): string
+    {
+        $optionResolver = service(OptionController::class);
+        return $optionResolver->getValue(service(LogDirectory::class)) . DIRECTORY_SEPARATOR . $optionResolver->getValue(service(VariablesLogFileName::class));
     }
 }

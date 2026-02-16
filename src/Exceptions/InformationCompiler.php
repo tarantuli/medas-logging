@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging;
+namespace Medas\Logging\Exceptions;
 
 use Medas\Core\{Attributes\Service, Events\DebugInformationGatherer};
+use Medas\Logging\Tracing\TraceFormatter;
 
 #[Service]
-readonly class ExceptionInformation
+readonly class InformationCompiler
 {
     public function __construct(
         private DebugInformationGatherer $debugInformationGatherer,
@@ -16,7 +17,7 @@ readonly class ExceptionInformation
     {
     }
 
-    public function gather(\Throwable $exception): string
+    public function compile(\Throwable $exception): string
     {
         $output = '';
 
@@ -43,7 +44,7 @@ readonly class ExceptionInformation
     private function addTraceInformation(string &$output, \Throwable $exception): void
     {
         $output .= "\n=== TRACE ===\n\n";
-        $output .= $this->traceFormatter->toString($exception);
+        $output .= $this->traceFormatter->toString($exception->getTrace());
     }
 
     private function addDebugInformation(string &$output): void
