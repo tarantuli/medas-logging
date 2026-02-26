@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Medas\Logging\ConfigOptions\Email;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOption};
-use Medas\Logging\ConfigOptions\LoggingGroup;
 
 #[Service]
 readonly class EmailBadRequests implements ConfigOption
 {
     public function __construct(
-        private LoggingGroup $group,
+        private EmailGroup $group,
     )
     {
     }

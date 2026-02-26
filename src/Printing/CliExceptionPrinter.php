@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Medas\Logging\Printing;
 
-use Medas\Core\{Attributes\Service, CaseSensitiveString, StringMaker};
-use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
+use Medas\Core\{Attributes\Service, CaseSensitiveString, Interfaces\ExceptionHandler, StringMaker};
 
 #[Service]
 readonly class CliExceptionPrinter implements ExceptionHandler
@@ -81,12 +80,8 @@ readonly class CliExceptionPrinter implements ExceptionHandler
         );
 
         if (is_array($argument)) {
-            try {
-                $argument = json_encode($argument);
-            }
-            catch (\Exception) {
-                $argument = "array (... cannot be serialized ...)";
-            }
+            $encoded = json_encode($argument);
+            $argument = $encoded !== false ? $encoded : 'array (... cannot be serialized ...)';
         }
 
         $type = get_debug_type($argument);

@@ -8,10 +8,10 @@ use Medas\Core\{
     Attributes\ConfigValue,
     Attributes\Service,
     Interfaces\BadRequestException,
-    Interfaces\DirectoryCreator
+    Interfaces\DirectoryCreator,
+    Interfaces\ExceptionHandler
 };
 use Medas\Logging\{ConfigOptions, Exceptions\InformationCompiler};
-use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
 
 #[Service]
 readonly class ExceptionLogger implements ExceptionHandler
@@ -62,7 +62,7 @@ readonly class ExceptionLogger implements ExceptionHandler
             '{dateYmd}' => date('Ymd'),
             '{timeHi}' => date('Hi'),
             '{message}' => mb_substr(
-                preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
+                (string) preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
                 0,
                 32
             ),

@@ -29,6 +29,9 @@ readonly class VariableLogger
         string|null                  $variablesLogFileName,
     )
     {
+        $logDirectory ??= 'var/log';
+        $variablesLogFileName ??= 'variables.log';
+
         $directoryCreator->create($logDirectory);
 
         $this->stringMakerSettings = new StringMaker\Settings(
@@ -41,7 +44,7 @@ readonly class VariableLogger
 
     public function log(mixed ...$variables): void
     {
-        $caller = debug_backtrace()[0];
+        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
 
         $callParameterNames = $this->callParametersFinder->find(
             $caller['file'],

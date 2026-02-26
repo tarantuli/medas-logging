@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Medas\Logging\Mailing;
 
-use Medas\Core\{Attributes\ConfigValue, Attributes\Service, Interfaces\BadRequestException};
+use Medas\Core\{
+    Attributes\ConfigValue,
+    Attributes\Service,
+    Interfaces\BadRequestException,
+    Interfaces\ExceptionHandler
+};
 use Medas\Logging\{ConfigOptions, Exceptions\InformationCompiler};
-use Medas\ServiceManager\ErrorHandling\ExceptionHandler;
 use PHPMailer\PHPMailer\PHPMailer;
 
 #[Service]
@@ -86,7 +90,12 @@ readonly class ExceptionMailer implements ExceptionHandler
         $mailer->Subject = $this->getSubject($exception);
         $mailer->Body = $this->informationCompiler->compile($exception);
 
-        $mailer->send();
+        try {
+            $mailer->send();
+        }
+        catch (\Throwable) {
+            // Silently discard mailing failures — error handling must never itself throw
+        }
     }
 
     private function getSubject(\Throwable $exception): string
@@ -101,7 +110,7 @@ readonly class ExceptionMailer implements ExceptionHandler
         return str_replace(
             array_keys($replacements),
             array_values($replacements),
-            $this->subjectPattern
+            $this->subjectPattern ?? '{sender} {message}'
         );
     }
 }

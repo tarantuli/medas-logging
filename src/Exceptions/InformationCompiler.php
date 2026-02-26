@@ -59,10 +59,11 @@ readonly class InformationCompiler
         foreach ($this->debugInformationGatherer->events as $event) {
             if (preg_match('/^(\[.+?]) ?(.+)$/', $event, $matches)) {
                 $source = $matches[1];
-                $event = $matches[2];
+                $message = $matches[2];
             }
             else {
                 $source = null;
+                $message = $event;
             }
 
             if ($source !== $previousSource) {
@@ -70,7 +71,7 @@ readonly class InformationCompiler
                 $previousSource = $source;
             }
 
-            $output .= "   $event\n";
+            $output .= "   $message\n";
         }
     }
 

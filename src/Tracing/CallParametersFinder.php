@@ -11,7 +11,13 @@ readonly class CallParametersFinder
 {
     public function find(string $file, int $line, string $methodName): array
     {
-        $tokens = \PhpToken::tokenize(file_get_contents($file), TOKEN_PARSE);
+        $source = file_get_contents($file);
+
+        if ($source === false) {
+            return [];
+        }
+
+        $tokens = \PhpToken::tokenize($source, TOKEN_PARSE);
         $names = [];
         $foundStart = false;
         $depth = 0;
@@ -22,7 +28,10 @@ readonly class CallParametersFinder
                 continue;
             }
 
-            if (!$foundStart && $tokens[$index - 1]->is(T_OBJECT_OPERATOR) && $token->text === $methodName) {
+            if (!$foundStart
+                    && $index > 0
+                    && $tokens[$index - 1]->is(T_OBJECT_OPERATOR)
+                    && $token->text === $methodName) {
                 $foundStart = true;
 
                 continue;
