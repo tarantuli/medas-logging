@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace Medas\Logging\Printing;
 
-use Medas\Core\{Attributes\Service, CaseSensitiveString, Interfaces\ExceptionHandler, StringMaker};
+use Medas\Core\{
+    Attributes\ConfigValue,
+    Attributes\Service,
+    CaseSensitiveString,
+    Interfaces\ExceptionHandler,
+    StringMaker
+};
+use Medas\Logging\ConfigOptions\TraceArgumentMaxLength;
 
 #[Service]
 readonly class CliExceptionPrinter implements ExceptionHandler
 {
+    public function __construct(
+        #[ConfigValue(TraceArgumentMaxLength::class)]
+        private int $traceArgumentMaxLength,
+    )
+    {
+    }
+
     public function handleException(\Throwable $exception): void
     {
         if (PHP_SAPI !== 'cli') {
@@ -93,7 +107,10 @@ readonly class CliExceptionPrinter implements ExceptionHandler
             printf("%s\n", $type);
         }
         elseif (is_string($argument) && mb_detect_encoding($argument, 'UTF-8')) {
-            printf("%s\n", new CaseSensitiveString($argument)->truncateToCharLength(156));
+            printf(
+                "%s\n",
+                new CaseSensitiveString($argument)->truncateToCharLength($this->traceArgumentMaxLength)
+            );
         }
         else {
             printf("%s\n", StringMaker::instance()->forceUtf8((string) $argument));

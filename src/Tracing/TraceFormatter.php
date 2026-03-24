@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace Medas\Logging\Tracing;
 
-use Medas\Core\{Attributes\Service, StringMaker};
+use Medas\Core\{Attributes\ConfigValue, Attributes\Service, StringMaker};
+use Medas\Logging\ConfigOptions\TraceArgumentMaxLength;
 
 #[Service]
 readonly class TraceFormatter
 {
+    public function __construct(
+        #[ConfigValue(TraceArgumentMaxLength::class)]
+        private int $traceArgumentMaxLength,
+    )
+    {
+    }
+
     public function toString(array $frames): string
     {
         $output = '';
@@ -34,7 +42,10 @@ readonly class TraceFormatter
                     $output .= sprintf("%s\n", $type);
                 }
                 elseif (is_string($argument) && mb_detect_encoding($argument, 'UTF-8')) {
-                    $output .= sprintf("%s\n", mb_substr($argument, 0, 156));
+                    $output .= sprintf(
+                        "%s\n",
+                        mb_substr($argument, 0, $this->traceArgumentMaxLength)
+                    );
                 }
                 else {
                     $output .= sprintf(

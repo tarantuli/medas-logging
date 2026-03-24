@@ -29,6 +29,9 @@ readonly class ExceptionLogger implements ExceptionHandler
 
         #[ConfigValue(ConfigOptions\FileNamePattern::class)]
         private string              $fileNamePattern,
+
+        #[ConfigValue(ConfigOptions\FileNameMessageMaxLength::class)]
+        private int                 $fileNameMessageMaxLength,
         DirectoryCreator            $directoryCreator,
 
         #[ConfigValue(ConfigOptions\LogDirectory::class)]
@@ -64,7 +67,7 @@ readonly class ExceptionLogger implements ExceptionHandler
             '{message}' => mb_substr(
                 (string) preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
                 0,
-                32
+                $this->fileNameMessageMaxLength
             ),
         ];
 
