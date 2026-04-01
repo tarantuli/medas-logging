@@ -11,7 +11,7 @@ use Medas\Core\{
     Interfaces\DirectoryCreator,
     Interfaces\ExceptionHandler
 };
-use Medas\Logging\{ConfigOptions, Exceptions\InformationCompiler};
+use Medas\Logging\{ConfigOptions, InformationCompilers\ExceptionCompiler};
 
 #[Service]
 readonly class ExceptionLogger implements ExceptionHandler
@@ -19,23 +19,23 @@ readonly class ExceptionLogger implements ExceptionHandler
     private string $logDirectory;
 
     public function __construct(
-        private InformationCompiler $informationCompiler,
+        private ExceptionCompiler $exceptionCompiler,
 
         #[ConfigValue(ConfigOptions\LogBadRequests::class)]
-        private bool                $logBadRequests,
+        private bool              $logBadRequests,
 
         #[ConfigValue(ConfigOptions\LogExceptions::class)]
-        private bool                $logExceptions,
+        private bool              $logExceptions,
 
         #[ConfigValue(ConfigOptions\FileNamePattern::class)]
-        private string              $fileNamePattern,
+        private string            $fileNamePattern,
 
         #[ConfigValue(ConfigOptions\FileNameMessageMaxLength::class)]
-        private int                 $fileNameMessageMaxLength,
-        DirectoryCreator            $directoryCreator,
+        private int               $fileNameMessageMaxLength,
+        DirectoryCreator          $directoryCreator,
 
         #[ConfigValue(ConfigOptions\LogDirectory::class)]
-        string|null                 $logDirectory,
+        string|null               $logDirectory,
     )
     {
         $this->logDirectory = $logDirectory ?? 'var/log';
@@ -54,7 +54,7 @@ readonly class ExceptionLogger implements ExceptionHandler
         }
 
         $filename = $this->getFileName($exception);
-        $content = $this->informationCompiler->compile($exception);
+        $content = $this->exceptionCompiler->compile($exception);
 
         file_put_contents($filename, $content);
     }

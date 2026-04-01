@@ -10,7 +10,7 @@ use Medas\Core\{
     Interfaces\BadRequestException,
     Interfaces\ExceptionHandler
 };
-use Medas\Logging\{ConfigOptions, Exceptions\InformationCompiler};
+use Medas\Logging\{ConfigOptions, InformationCompilers\ExceptionCompiler};
 use PHPMailer\PHPMailer\PHPMailer;
 
 #[Service]
@@ -19,34 +19,34 @@ readonly class ExceptionMailer implements ExceptionHandler
     private PHPMailer $mailer;
 
     public function __construct(
-        private InformationCompiler $informationCompiler,
+        private ExceptionCompiler $exceptionCompiler,
 
         #[ConfigValue(ConfigOptions\EmailExceptions::class)]
-        private bool                $emailExceptions,
+        private bool              $emailExceptions,
 
         #[ConfigValue(ConfigOptions\Email\EmailBadRequests::class)]
-        private bool                $emailBadRequests,
+        private bool              $emailBadRequests,
 
         #[ConfigValue(ConfigOptions\Email\SubjectPattern::class)]
-        private string|null         $subjectPattern,
+        private string|null       $subjectPattern,
 
         #[ConfigValue(ConfigOptions\Email\Sender::class)]
-        private string|null         $sender,
+        private string|null       $sender,
 
         #[ConfigValue(ConfigOptions\Email\Port::class)]
-        int|null                    $port,
+        int|null                  $port,
 
         #[ConfigValue(ConfigOptions\Email\Host::class)]
-        string|null                 $host,
+        string|null               $host,
 
         #[ConfigValue(ConfigOptions\Email\Username::class)]
-        string|null                 $username,
+        string|null               $username,
 
         #[ConfigValue(ConfigOptions\Email\Password::class)]
-        string|null                 $password,
+        string|null               $password,
 
         #[ConfigValue(ConfigOptions\Email\Receiver::class)]
-        string|null                 $receiver,
+        string|null               $receiver,
     )
     {
         if ($this->emailExceptions
@@ -88,7 +88,7 @@ readonly class ExceptionMailer implements ExceptionHandler
         $mailer = clone $this->mailer;
 
         $mailer->Subject = $this->getSubject($exception);
-        $mailer->Body = $this->informationCompiler->compile($exception);
+        $mailer->Body = $this->exceptionCompiler->compile($exception);
 
         try {
             $mailer->send();
