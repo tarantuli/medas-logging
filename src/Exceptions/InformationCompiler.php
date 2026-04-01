@@ -22,8 +22,11 @@ readonly class InformationCompiler
         $output = '';
 
         $this->addExceptionMessage($output, $exception);
+        $this->addChainedExceptions($output, $exception);
         $this->addTraceInformation($output, $exception);
         $this->addDebugInformation($output);
+        $this->addRequestHeaders($output);
+        $this->addQueryParameters($output);
         $this->addPostBodyInformation($output);
         $this->addServerInformation($output);
 
@@ -39,6 +42,29 @@ readonly class InformationCompiler
             $exception->getLine(),
             $exception->getMessage()
         );
+    }
+
+    private function addChainedExceptions(string &$output, \Throwable $exception): void
+    {
+        $previous = $exception->getPrevious();
+
+        if ($previous === null) {
+            return;
+        }
+
+        $output .= "\n=== CAUSED BY ===\n\n";
+
+        while ($previous !== null) {
+            $output .= sprintf(
+                "%s\n\n%s:%u\n   %s\n\n",
+                $previous::class,
+                $previous->getFile(),
+                $previous->getLine(),
+                $previous->getMessage()
+            );
+
+            $previous = $previous->getPrevious();
+        }
     }
 
     private function addTraceInformation(string &$output, \Throwable $exception): void
@@ -72,6 +98,46 @@ readonly class InformationCompiler
             }
 
             $output .= "   $message\n";
+        }
+    }
+
+    private function addRequestHeaders(string &$output): void
+    {
+        $headers = [];
+
+        foreach ($_SERVER as $name => $value) {
+            if (str_starts_with($name, 'HTTP_')) {
+                $header = str_replace('_', '-', substr($name, 5));
+                $header = ucwords(strtolower($header), '-');
+                $headers[$header] = $value;
+            }
+        }
+
+        if (!$headers) {
+            return;
+        }
+
+        $output .= "\n=== REQUEST HEADERS ===\n\n";
+
+        foreach ($headers as $name => $value) {
+            $output .= sprintf("%-30s   %s\n", $name, $value);
+        }
+    }
+
+    private function addQueryParameters(string &$output): void
+    {
+        if (empty($_GET)) {
+            return;
+        }
+
+        $output .= "\n=== QUERY PARAMS ===\n\n";
+
+        foreach ($_GET as $name => $value) {
+            $output .= sprintf(
+                "%-30s   %s\n",
+                $name,
+                is_scalar($value) ? $value : json_encode($value)
+            );
         }
     }
 
