@@ -103,8 +103,14 @@ readonly class CliExceptionPrinter implements ExceptionHandler
         if (class_exists($type)) {
             printf("%s[%u]\n", $type, spl_object_id($argument));
         }
+        elseif(is_bool($argument) || $argument === null) {
+            printf("·%s\n", var_export($argument, true));
+        }
         elseif (!is_scalar($argument)) {
             printf("%s\n", $type);
+        }
+        elseif ($argument === '') {
+            printf("« empty string »\n");
         }
         elseif (is_string($argument) && mb_detect_encoding($argument, 'UTF-8')) {
             printf(
