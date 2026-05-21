@@ -14,7 +14,6 @@
   "require": {
     "ext-mbstring": "*",
     "morphp/medas-core": "^3",
-    "morphp/medas-service-manager": "^3",
     "php": "^8.4",
     "phpmailer/phpmailer": "^7.0"
   },
@@ -22,6 +21,7 @@
     "morphp/medas-config-manager": "^3",
     "morphp/medas-config-options": "^3",
     "morphp/medas-file-system": "^3",
+    "morphp/medas-service-manager": "^3",
     "phpunit/phpunit": "^10"
   },
   "autoload": {
