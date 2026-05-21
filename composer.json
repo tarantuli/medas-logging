@@ -21,6 +21,7 @@
     "morphp/medas-config-manager": "^3",
     "morphp/medas-config-options": "^3",
     "morphp/medas-file-system": "^3",
+    "morphp/medas-object-instantiator": "^3",
     "morphp/medas-service-manager": "^3",
     "phpunit/phpunit": "^10"
   },

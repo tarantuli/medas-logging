@@ -75,14 +75,14 @@ readonly class ExceptionMailer implements ExceptionHandler
         }
     }
 
-    public function handleException(\Throwable $exception): void
+    public function handleException(\Throwable $exception): bool
     {
         if (!$this->emailExceptions || !isset($this->mailer)) {
-            return;
+            return false;
         }
 
         if (!$this->emailBadRequests && $exception instanceof BadRequestException) {
-            return;
+            return false;
         }
 
         $mailer = clone $this->mailer;
@@ -91,10 +91,11 @@ readonly class ExceptionMailer implements ExceptionHandler
         $mailer->Body = $this->exceptionCompiler->compile($exception);
 
         try {
-            $mailer->send();
+            return $mailer->send();
         }
         catch (\Throwable) {
             // Silently discard mailing failures — error handling must never itself throw
+            return false;
         }
     }
 

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Medas\LoggingTest\Functional;
 
 use Medas\ConfigOptions\OptionController;
-use Medas\Logging\ConfigOptions\LogDirectory;
-use Medas\Logging\ConfigOptions\VariablesLogFileName;
-use Medas\Logging\Logging\VariableLogger;
+use Medas\Logging\{
+    ConfigOptions\LogDirectory,
+    ConfigOptions\VariablesLogFileName,
+    Logging\VariableLogger
+};
 use Medas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +29,7 @@ class VariableDumperTest extends TestCase
         }
 
         $variableLogger->log($variable->foo[1], $serviceManager);
+
         $dumpFileContent = file_get_contents($fileName);
 
         self::assertStringContainsString('$variable->foo[1]', $dumpFileContent);
@@ -37,6 +40,9 @@ class VariableDumperTest extends TestCase
     private function getFileName(): string
     {
         $optionResolver = service(OptionController::class);
-        return $optionResolver->getValue(service(LogDirectory::class)) . DIRECTORY_SEPARATOR . $optionResolver->getValue(service(VariablesLogFileName::class));
+
+        return $optionResolver->getValue(service(LogDirectory::class))
+            . DIRECTORY_SEPARATOR
+            . $optionResolver->getValue(service(VariablesLogFileName::class));
     }
 }

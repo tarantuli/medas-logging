@@ -43,20 +43,21 @@ readonly class ExceptionLogger implements ExceptionHandler
         $directoryCreator->create($this->logDirectory);
     }
 
-    public function handleException(\Throwable $exception): void
+    public function handleException(\Throwable $exception): bool
     {
         if (!$this->logExceptions) {
-            return;
+            return false;
         }
 
         if (!$this->logBadRequests && $exception instanceof BadRequestException) {
-            return;
+            return false;
         }
 
         $filename = $this->getFileName($exception);
         $content = $this->exceptionCompiler->compile($exception);
+        $bytes = file_put_contents($filename, $content);
 
-        file_put_contents($filename, $content);
+        return $bytes !== false;
     }
 
     private function getFileName(\Throwable $exception): string

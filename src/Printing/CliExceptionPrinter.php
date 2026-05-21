@@ -23,13 +23,15 @@ readonly class CliExceptionPrinter implements ExceptionHandler
     {
     }
 
-    public function handleException(\Throwable $exception): void
+    public function handleException(\Throwable $exception): bool
     {
         if (PHP_SAPI !== 'cli') {
-            return;
+            return false;
         }
 
         $this->printThrowable($exception);
+
+        return true;
     }
 
     public function printThrowable(\Throwable $exception): void
