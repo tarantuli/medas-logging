@@ -42,6 +42,9 @@ readonly class VariableLogger
         $this->fileName = $logDirectory . DIRECTORY_SEPARATOR . $variablesLogFileName;
     }
 
+    /**
+     * This method should be called when you directly inject the VariableLogger service
+     */
     public function log(mixed ...$variables): void
     {
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
@@ -52,6 +55,27 @@ readonly class VariableLogger
             'log'
         );
 
+        $this->logWithCaller($caller, $callParameterNames, $variables);
+    }
+
+    /**
+     * This method should only be called by the global function varlog()
+     */
+    public function logFromGlobalFunction(mixed ...$variables): void
+    {
+        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+
+        $callParameterNames = $this->callParametersFinder->find(
+            $caller['file'],
+            $caller['line'],
+            'varlog'
+        );
+
+        $this->logWithCaller($caller, $callParameterNames, $variables);
+    }
+
+    private function logWithCaller(array $caller, array $callParameterNames, array $variables): void
+    {
         $header = sprintf("%s:%u\n", $caller['file'], $caller['line']);
 
         file_put_contents($this->fileName, $header, FILE_APPEND);
