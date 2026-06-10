@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\ConfigOptions\Email;
+namespace Medas\ErrorReporting\ConfigOptions\Email;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup};
-use Medas\Logging\ConfigOptions\LoggingGroup;
+use Medas\ErrorReporting\ConfigOptions\ErrorReportingGroup;
 
 #[Service]
 readonly class EmailGroup implements ConfigGroup
 {
     public function __construct(
-        private LoggingGroup $group,
+        private ErrorReportingGroup $group,
     )
     {
     }

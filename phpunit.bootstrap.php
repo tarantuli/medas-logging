@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Medas\ConfigManager\ConfigManagerPackage;
 use Medas\ConfigOptions\ConfigOptionsPackage;
 use Medas\FileSystem\FileSystemPackage;
-use Medas\Logging\LoggingPackage;
+use Medas\ErrorReporting\ErrorReportingPackage;
 use Medas\ObjectInstantiator\ObjectInstantiator;
 use Medas\ServiceManager\{ServiceConfig, ServiceManager};
 
@@ -17,7 +17,7 @@ new ServiceManager(function (): ServiceConfig {
     $config->addPackages([
         ConfigManagerPackage::instance(),
         ConfigOptionsPackage::instance(),
-        LoggingPackage::instance(),
+        ErrorReportingPackage::instance(),
         FileSystemPackage::instance(),
     ]);
 

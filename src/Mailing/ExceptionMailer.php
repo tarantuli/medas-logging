@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Mailing;
+namespace Medas\ErrorReporting\Mailing;
 
 use Medas\Core\{
     Attributes\ConfigValue,
@@ -10,7 +10,7 @@ use Medas\Core\{
     Interfaces\BadRequestException,
     Interfaces\ExceptionHandler
 };
-use Medas\Logging\{ConfigOptions, InformationCompilers\ExceptionCompiler};
+use Medas\ErrorReporting\{ConfigOptions, InformationCompilers\ExceptionCompiler};
 use PHPMailer\PHPMailer\PHPMailer;
 
 #[Service]

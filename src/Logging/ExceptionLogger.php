@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Logging;
+namespace Medas\ErrorReporting\Logging;
 
 use Medas\Core\{
     Attributes\ConfigValue,
@@ -11,7 +11,7 @@ use Medas\Core\{
     Interfaces\DirectoryCreator,
     Interfaces\ExceptionHandler
 };
-use Medas\Logging\{ConfigOptions, InformationCompilers\ExceptionCompiler};
+use Medas\ErrorReporting\{ConfigOptions, InformationCompilers\ExceptionCompiler};
 
 #[Service]
 readonly class ExceptionLogger implements ExceptionHandler

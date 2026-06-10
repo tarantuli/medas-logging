@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Medas\LoggingTest\Functional;
+namespace Medas\ErrorReportingTest\Functional;
 
 use Medas\ConfigOptions\OptionController;
-use Medas\Logging\{
+use Medas\ErrorReporting\{
     ConfigOptions\LogDirectory,
     ConfigOptions\VariablesLogFileName,
     Logging\VariableLogger

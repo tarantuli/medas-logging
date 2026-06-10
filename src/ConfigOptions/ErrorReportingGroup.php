@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\ConfigOptions;
+namespace Medas\ErrorReporting\ConfigOptions;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup};
 
 #[Service]
-readonly class LoggingGroup implements ConfigGroup
+readonly class ErrorReportingGroup implements ConfigGroup
 {
     public function parent(): ConfigGroup|null
     {
@@ -16,6 +16,6 @@ readonly class LoggingGroup implements ConfigGroup
 
     public function name(): string
     {
-        return 'logging';
+        return 'error-reporting';
     }
 }

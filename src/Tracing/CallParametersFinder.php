@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Tracing;
+namespace Medas\ErrorReporting\Tracing;
 
 use Medas\Core\Attributes\Service;
 

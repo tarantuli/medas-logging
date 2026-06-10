@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Printing;
+namespace Medas\ErrorReporting\Printing;
 
 use Medas\Core\{
     Attributes\ConfigValue,
@@ -11,7 +11,7 @@ use Medas\Core\{
     Interfaces\ExceptionHandler,
     StringMaker
 };
-use Medas\Logging\ConfigOptions\TraceArgumentMaxLength;
+use Medas\ErrorReporting\ConfigOptions\TraceArgumentMaxLength;
 
 #[Service]
 readonly class CliExceptionPrinter implements ExceptionHandler
@@ -73,7 +73,10 @@ readonly class CliExceptionPrinter implements ExceptionHandler
             printf("  %s::%s()\n", $trace['class'], $trace['function']);
 
             try {
-                $parameters = (new \ReflectionMethod($trace['class'], $trace['function']))->getParameters();
+                $parameters = new \ReflectionMethod(
+                    $trace['class'],
+                    $trace['function']
+                )->getParameters();
             }
             catch (\ReflectionException) {
                 $parameters = null;

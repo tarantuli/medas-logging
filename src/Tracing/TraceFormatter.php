@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Tracing;
+namespace Medas\ErrorReporting\Tracing;
 
 use Medas\Core\{Attributes\ConfigValue, Attributes\Service, StringMaker};
-use Medas\Logging\ConfigOptions\TraceArgumentMaxLength;
+use Medas\ErrorReporting\ConfigOptions\TraceArgumentMaxLength;
 
 #[Service]
 readonly class TraceFormatter

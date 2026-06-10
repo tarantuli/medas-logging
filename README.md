@@ -1,4 +1,4 @@
-# medas-logging
+# medas-error-reporting
 
 Part of the [Medas framework](https://github.com/tarantuli/medas-core).
 
@@ -28,27 +28,27 @@ Exception logging, exception email alerting, and debug variable logging. All thr
 
 | Option                                 | Default                            | Description                                                   |
 |----------------------------------------|------------------------------------|---------------------------------------------------------------|
-| `logging.log-exceptions`               | `true`                             | Write exception files to disk                                 |
-| `logging.log-bad-requests`             | `false`                            | Also log 4xx `BadRequestException` instances                  |
-| `logging.log-directory`                | `var/log`                          | Directory for log files                                       |
-| `logging.file-name-pattern`            | `{dateYmd}_{timeHi}_{message}.log` | Log file name pattern                                         |
-| `logging.file-name-message-max-length` | `50`                               | Maximum characters from the exception message in the filename |
-| `logging.variables-log-file-name`      | `variables.log`                    | File name for `VariableLogger` output                         |
-| `logging.trace-argument-max-length`    | `200`                              | Max string length per trace argument                          |
+| `error-reporting.log-exceptions`       | `true`                             | Write exception files to disk                                 |
+| `error-reporting.log-bad-requests`             | `false`                            | Also log 4xx `BadRequestException` instances                  |
+| `error-reporting.log-directory`                | `var/log`                          | Directory for log files                                       |
+| `error-reporting.file-name-pattern`            | `{dateYmd}_{timeHi}_{message}.log` | Log file name pattern                                         |
+| `error-reporting.file-name-message-max-length` | `50`                               | Maximum characters from the exception message in the filename |
+| `error-reporting.variables-log-file-name`      | `variables.log`                    | File name for `VariableLogger` output                         |
+| `error-reporting.trace-argument-max-length`    | `200`                              | Max string length per trace argument                          |
 
 **Email:**
 
 | Option                             | Default              | Description                                                                     |
 |------------------------------------|----------------------|---------------------------------------------------------------------------------|
-| `logging.email-exceptions`         | `false`              | Send exception emails                                                           |
-| `logging.email.email-bad-requests` | `false`              | Also email 4xx exceptions                                                       |
-| `logging.email.host`               | none                 | SMTP host                                                                       |
-| `logging.email.port`               | none                 | SMTP port                                                                       |
-| `logging.email.username`           | none                 | SMTP username                                                                   |
-| `logging.email.password`           | none                 | SMTP password                                                                   |
-| `logging.email.sender`             | none                 | Display name for the From field                                                 |
-| `logging.email.receiver`           | none                 | Recipient email address                                                         |
-| `logging.email.subject-pattern`    | `{sender} {message}` | Email subject; supports `{sender}`, `{file-name}`, `{line-number}`, `{message}` |
+| `error-reporting.email-exceptions`         | `false`              | Send exception emails                                                           |
+| `error-reporting.email.email-bad-requests` | `false`              | Also email 4xx exceptions                                                       |
+| `error-reporting.email.host`               | none                 | SMTP host                                                                       |
+| `error-reporting.email.port`               | none                 | SMTP port                                                                       |
+| `error-reporting.email.username`           | none                 | SMTP username                                                                   |
+| `error-reporting.email.password`           | none                 | SMTP password                                                                   |
+| `error-reporting.email.sender`             | none                 | Display name for the From field                                                 |
+| `error-reporting.email.receiver`           | none                 | Recipient email address                                                         |
+| `error-reporting.email.subject-pattern`    | `{sender} {message}` | Email subject; supports `{sender}`, `{file-name}`, `{line-number}`, `{message}` |
 
 ## Usage
 
@@ -57,16 +57,16 @@ Exception logging, exception email alerting, and debug variable logging. All thr
 Register the package and wire `ExceptionLogger` and `ExceptionMailer` as exception handlers:
 
 ```php
-use Medas\Logging\LoggingPackage;
+use Medas\ErrorReporting\ErrorReportingPackage;
 
-LoggingPackage::instance();
+ErrorReportingPackage::instance();
 ```
 
 **Registering exception handlers:**
 
 ```php
-use Medas\Logging\Logging\ExceptionLogger;
-use Medas\Logging\Mailing\ExceptionMailer;
+use Medas\ErrorReporting\Logging\ExceptionLogger;
+use Medas\ErrorReporting\Mailing\ExceptionMailer;
 
 // In your ServiceConfig or bootstrap
 $config->addExceptionHandlerClasses(
@@ -80,7 +80,7 @@ The framework's exception dispatcher calls each registered handler in order unti
 **Debug variable logging:**
 
 ```php
-use Medas\Logging\Logging\VariableLogger;
+use Medas\ErrorReporting\Logging\VariableLogger;
 use Medas\Core\Attributes\Service;
 
 #[Service]
@@ -108,7 +108,7 @@ readonly class InvoiceProcessor
 **Normalising an exception for JSON responses:**
 
 ```php
-use Medas\Logging\Normalizing\ThrowableNormalizer;
+use Medas\ErrorReporting\Normalizing\ThrowableNormalizer;
 use Medas\Core\Attributes\Service;
 
 #[Service]
@@ -150,7 +150,7 @@ readonly class SlackExceptionNotifier implements ExceptionHandler
 **Configuring file logging:**
 
 ```yaml
-logging:
+error-reporting:
   log-exceptions: true
   log-bad-requests: false
   log-directory: var/log
@@ -163,7 +163,7 @@ Produces files like: `var/log/20260522_1430_invalid-invoice-amount.log`
 **Configuring email alerts:**
 
 ```yaml
-logging:
+error-reporting:
   email-exceptions: true
   email:
     host: smtp.example.com

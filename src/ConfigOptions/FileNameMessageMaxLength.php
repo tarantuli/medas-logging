@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\ConfigOptions;
+namespace Medas\ErrorReporting\ConfigOptions;
 
 use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOption};
 
@@ -10,7 +10,7 @@ use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOpt
 readonly class FileNameMessageMaxLength implements ConfigOption
 {
     public function __construct(
-        private LoggingGroup $group,
+        private ErrorReportingGroup $group,
     )
     {
     }

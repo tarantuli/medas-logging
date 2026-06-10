@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Logging;
+namespace Medas\ErrorReporting\Logging;
 
 use Medas\Core\{
     Attributes\ConfigValue,
@@ -10,7 +10,7 @@ use Medas\Core\{
     Interfaces\DirectoryCreator,
     StringMaker
 };
-use Medas\Logging\{ConfigOptions, Tracing\CallParametersFinder};
+use Medas\ErrorReporting\{ConfigOptions, Tracing\CallParametersFinder};
 
 #[Service]
 readonly class VariableLogger

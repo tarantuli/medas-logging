@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\InformationCompilers;
+namespace Medas\ErrorReporting\InformationCompilers;
 
 use Medas\Core\Events\DebugInformationGatherer;
 

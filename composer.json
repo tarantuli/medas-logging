@@ -1,6 +1,6 @@
 {
-  "name": "morphp/medas-logging",
-  "description": "Medas logging",
+  "name": "morphp/medas-error-reporting",
+  "description": "Medas error-reporting",
   "keywords": [
     "backend"
   ],
@@ -27,12 +27,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Medas\\Logging\\": "src/"
+      "Medas\\ErrorReporting\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Medas\\LoggingTest\\": "tests/"
+      "Medas\\ErrorReportingTest\\": "tests/"
     }
   }
 }

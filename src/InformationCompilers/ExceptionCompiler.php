@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\InformationCompilers;
+namespace Medas\ErrorReporting\InformationCompilers;
 
 use Medas\Core\{Attributes\Service, Events\DebugInformationGatherer};
-use Medas\Logging\Tracing\TraceFormatter;
+use Medas\ErrorReporting\Tracing\TraceFormatter;
 
 #[Service]
 readonly class ExceptionCompiler extends BaseCompiler

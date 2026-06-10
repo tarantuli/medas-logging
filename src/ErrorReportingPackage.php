@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging;
+namespace Medas\ErrorReporting;
 
 use Medas\Core\{AsSingleton, BasePackage};
 
-class LoggingPackage extends BasePackage
+class ErrorReportingPackage extends BasePackage
 {
     use AsSingleton;
 

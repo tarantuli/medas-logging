@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Normalizing;
+namespace Medas\ErrorReporting\Normalizing;
 
 use Medas\Core\{Attributes\Service, StringMaker};
 

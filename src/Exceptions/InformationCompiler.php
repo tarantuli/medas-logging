@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Medas\Logging\Exceptions;
+namespace Medas\ErrorReporting\Exceptions;
 
-use Medas\Logging\InformationCompilers\ExceptionCompiler;
+use Medas\ErrorReporting\InformationCompilers\ExceptionCompiler;
 
 /**
  * @deprecated Use ExceptionCompiler or RequestCompiler from InformationCompilers\ instead.
