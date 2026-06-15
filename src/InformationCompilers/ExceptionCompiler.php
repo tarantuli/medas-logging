@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Medas\ErrorReporting\InformationCompilers;
 
-use Medas\Core\{Attributes\Service, Events\DebugInformationGatherer};
-use Medas\ErrorReporting\Tracing\TraceFormatter;
+use Medas\Core\{Attributes\Service, Events\DebugInformationGatherer, Exceptions\TraceFormatter};
 
 #[Service]
 readonly class ExceptionCompiler extends BaseCompiler

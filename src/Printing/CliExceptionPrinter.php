@@ -8,10 +8,10 @@ use Medas\Core\{
     Attributes\ConfigValue,
     Attributes\Service,
     CaseSensitiveString,
+    ConfigOptions\TraceArgumentMaxLength,
     Interfaces\ExceptionHandler,
     StringMaker
 };
-use Medas\ErrorReporting\ConfigOptions\TraceArgumentMaxLength;
 
 #[Service]
 readonly class CliExceptionPrinter implements ExceptionHandler
