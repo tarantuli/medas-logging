@@ -20,7 +20,7 @@ class ErrorReportingPackage extends BasePackage
         return __DIR__;
     }
 
-    public function initialize(Interfaces\ServiceConfig $config): void
+    public function initialize(Interfaces\ServiceConfigBuilder $config): void
     {
         require_once __DIR__ . '/GlobalFunctions.php';
 
