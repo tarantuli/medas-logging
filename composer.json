@@ -13,7 +13,7 @@
   "type": "library",
   "require": {
     "ext-mbstring": "*",
-    "morphp/medas-core": "^3",
+    "morphp/medas-core": "^3|^4",
     "php": "^8.4",
     "phpmailer/phpmailer": "^7.0"
   },
