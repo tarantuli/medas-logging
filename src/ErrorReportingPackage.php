@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Medas\ErrorReporting;
 
-use Medas\Core\{AsSingleton, BasePackage, Interfaces};
+use Medas\Core\{AsSingleton, BasePackage};
 
 class ErrorReportingPackage extends BasePackage
 {
@@ -20,10 +20,10 @@ class ErrorReportingPackage extends BasePackage
         return __DIR__;
     }
 
-    public function initialize(Interfaces\ServiceConfigBuilder $config): void
+    public function ready(): void
     {
         require_once __DIR__ . '/GlobalFunctions.php';
 
-        parent::initialize($config);
+        parent::ready();
     }
 }

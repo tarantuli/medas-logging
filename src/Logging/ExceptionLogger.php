@@ -65,11 +65,12 @@ readonly class ExceptionLogger implements ExceptionHandler
         $replacements = [
             '{dateYmd}' => date('Ymd'),
             '{timeHi}' => date('Hi'),
-            '{message}' => mb_substr(
-                (string) preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
-                0,
-                $this->fileNameMessageMaxLength
-            ),
+            '{message}'
+                => mb_substr(
+                    (string) preg_replace('/\W+/', '-', strtolower($exception->getMessage())),
+                    0,
+                    $this->fileNameMessageMaxLength
+                ),
         ];
 
         $fileName = str_replace(
