@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Medas\ErrorReporting\ConfigOptions\Email;
 
-use Medas\Core\{Attributes\Service, Interfaces\ConfigGroup, Interfaces\ConfigOption};
+use Medas\Core\{
+    Attributes\Service,
+    Interfaces\ConfigGroup,
+    Interfaces\ConfigOption,
+    Interfaces\IsSensitive
+};
 
 #[Service]
-readonly class Password implements ConfigOption
+readonly class Password implements ConfigOption, IsSensitive
 {
     public function __construct(
         private EmailGroup $group,
